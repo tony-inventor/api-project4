@@ -1,0 +1,22 @@
+src/
+├── controllers/
+│   ├── UserController.ts
+│   ├── ProductController.ts
+│   ├── SupermarketController.ts
+│   └── PriceEntryController.ts
+├── repositories/
+│   ├── UserRepository.ts
+│   ├── ProductRepository.ts
+│   ├── SupermarketRepository.ts
+│   └── PriceEntryRepository.ts
+├── routes/
+│   ├── user.routes.ts
+│   ├── product.routes.ts
+│   ├── supermarket.routes.ts
+│   └── priceEntry.routes.ts
+├── middlewares/
+│   └── errorHandler.ts
+├── lib/
+│   └── prisma.ts
+├── app.ts
+└── server.ts

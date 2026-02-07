@@ -5,5 +5,5 @@ import { errorHandler } from "@middlewares/errorHandler";
 export const app: express.Express = express();
 
 app.use(express.json());
-app.use(userRoutes);
+app.use("/api/users", userRoutes);
 app.use(errorHandler);

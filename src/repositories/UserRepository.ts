@@ -16,15 +16,23 @@ const prisma = new PrismaClient({ adapter });
 
 export class UserRepository {
   static async getAll() {
-    return prisma.tb_user.findMany();
+    return prisma.user.findMany();
   }
 
-  static async getById(id: string | number) {
-    const userId = typeof id === "string" ? Number(id) : id;
-    if (typeof userId !== "number" || Number.isNaN(userId)) {
-      return null;
-    }
+  static async getById(id: string) {
+    console.log(`Fetching user with id: ${id}`);
+    return prisma.user.findUnique({ where: { id: String(id) } });
+  }
 
-    return prisma.tb_user.findUnique({ where: { id: userId } });
+  static async newUser(data: {
+    openId: string;
+    email: string;
+    name: string;
+    roleId: string;
+  }) {
+    // Set default role to 'user' if not provided
+    const roleId = data.roleId || "user";
+
+    return prisma.user.create({ data });
   }
 }

@@ -16,17 +16,19 @@
     "moduleDetection": "force",
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@routes/*": ["src/routes/*"],
-      "@middlewares/*": ["src/middlewares/*"],
-      "@controllers/*": ["src/controllers/*"],
-      "@repositories/*": ["src/repositories/*"]
+      "@routes/*": ["routes/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@controllers/*": ["controllers/*"],
+      "@repositories/*": ["repositories/*"]
     }
   },
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
     }
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

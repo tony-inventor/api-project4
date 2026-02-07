@@ -37,4 +37,27 @@ export class UserController {
       next(error);
     }
   }
+
+  async newUser(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { openId, email, name, roleId } = req.body;
+      if (!openId || !email || !name) {
+        res.status(400).json({ message: "Missing required fields" });
+        return;
+      }
+      const newUser = await UserRepository.newUser({
+        openId,
+        email,
+        name,
+        roleId,
+      });
+      res.status(201).json(newUser);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

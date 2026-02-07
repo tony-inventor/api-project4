@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Delete existing users to avoid unique constraint violations
-  await prisma.tb_user.deleteMany();
+  await prisma.user.deleteMany();
 
   console.log("Iniciando seed...");
 

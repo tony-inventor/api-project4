@@ -2,13 +2,61 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model tb_user {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
-}
-
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  value String @id
+  users User[]
+  @@map("roles")
+}
+
+model User {
+  id           String       @id @default(uuid())
+  openId       String       @unique
+  email        String       @unique
+  name         String
+  role         Role         @relation(fields: [roleId], references: [value])
+  roleId       String
+  lastSignedIn DateTime?
+  priceEntries PriceEntry[]
+  @@map("users")
+}
+
+model Product {
+  id           String       @id @default(uuid())
+  barcode      String       @unique
+  name         String
+  description  String?
+  priceEntries PriceEntry[]
+  @@map("products")
+}
+
+model Supermarket {
+  id           String                @id @default(uuid())
+  name         String
+  location     String
+  coordinates  Unsupported("point")?
+  priceEntries PriceEntry[]
+  @@map("supermarkets")
+}
+
+model PriceEntry {
+  id            BigInt      @id @default(autoincrement())
+  productId     String
+  supermarketId String
+  collectorId   String
+  price         Decimal
+  isOnSale      Boolean     @default(false)
+  date          DateTime
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  supermarket   Supermarket @relation(fields: [supermarketId], references: [id], onDelete: Cascade)
+  collector     User        @relation(fields: [collectorId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([supermarketId])
+  @@index([collectorId])
+  @@map("price_entries")
 }
