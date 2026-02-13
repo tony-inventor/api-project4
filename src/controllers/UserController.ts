@@ -8,6 +8,7 @@ export class UserController {
     next: NextFunction,
   ): Promise<void> {
     try {
+      console.log("Entering getAllUsers()");
       const users = await UserRepository.getAll();
       res.status(200).json(users);
     } catch (error) {
@@ -58,6 +59,51 @@ export class UserController {
       res.status(201).json(newUser);
     } catch (error) {
       next(error);
+    }
+  }
+
+  async updateUser(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { id, openId, email, name, roleId } = req.body;
+
+      if (!id || !openId || email || name) {
+        res.status(400).json({ message: "Missing required fields" });
+        return;
+      }
+      const userUpdated = await UserRepository.updateUser(id, {
+        openId,
+        email,
+        name,
+        roleId,
+      });
+      res.status(201).json(userUpdated);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteUser(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      console.log("Entering deleteUser()");
+      const deleteId = req.params.id;
+      if (!deleteId) {
+        res.status(400).json({ message: "Invalid or missing id parameter" });
+      }
+
+      const user = await UserRepository.deleteUser(String(deleteId));
+      if (user) {
+        res.status(200).json(user);
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   }
 }

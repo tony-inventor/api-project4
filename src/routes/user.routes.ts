@@ -9,5 +9,10 @@ routes.get("/:id", (req, res, next) =>
   userController.getUserById(req, res, next),
 );
 routes.post("/", (req, res, next) => userController.newUser(req, res, next));
-
+routes.patch("/", (req, res, next) =>
+  userController.updateUser(req, res, next),
+);
+routes.delete("/:id", (req, res, next) => {
+  userController.deleteUser(req, res, next);
+});
 export default routes;

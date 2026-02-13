@@ -16,11 +16,11 @@ const prisma = new PrismaClient({ adapter });
 
 export class UserRepository {
   static async getAll() {
+    console.log("userRepository.getAll()");
     return prisma.user.findMany();
   }
 
   static async getById(id: string) {
-    console.log(`Fetching user with id: ${id}`);
     return prisma.user.findUnique({ where: { id: String(id) } });
   }
 
@@ -33,6 +33,32 @@ export class UserRepository {
     // Set default role to 'user' if not provided
     const roleId = data.roleId || "user";
 
-    return prisma.user.create({ data });
+    return prisma.user.create({ data: { ...data } });
+  }
+
+  static async updateUser(
+    id: string,
+    data: {
+      openId?: string;
+      email?: string;
+      name?: string;
+      roleId?: string;
+      lastSignedIn?: Date;
+    },
+  ) {
+    console.log(`Updating user with id: ${id}`);
+
+    return prisma.user.update({
+      where: { id: String(id) },
+      data,
+    });
+  }
+
+  static async deleteUser(id: string) {
+    console.log(`deleteUser(id=${id})`);
+
+    return prisma.user.delete({
+      where: { id: String(id) },
+    });
   }
 }
